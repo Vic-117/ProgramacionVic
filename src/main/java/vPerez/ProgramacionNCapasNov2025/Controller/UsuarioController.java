@@ -441,7 +441,7 @@ public class UsuarioController {
     @PostMapping("/search")
     public String buscarUsuarios(@ModelAttribute("Usuario") Usuario usuario){
         
-        return "redirect:/Index";
+//        return "redirect:/Index";
     }
 
 }
