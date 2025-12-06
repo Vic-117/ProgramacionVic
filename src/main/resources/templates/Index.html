@@ -29,6 +29,9 @@
 
                 </center>
             </div>
+            
+                                                <!--BARRA DE BUSQUEDA-->
+                                                
             <section class="container">
                 <form class=" mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{/Usuario/search}">
                     <div class="input-group">
@@ -36,7 +39,7 @@
                         <input type="text" class="form-control" placeholder="Nombre"  th:field="*{Nombre}"/>
                         <input type="text" class="form-control" placeholder="Apellido Paterno"  th:field="*{ApellidoPaterno}"/>
                         <input type="text" class="form-control" placeholder="Apellido Materno" />
-                        <input type="text" class="form-control" placeholder="Rol" />
+                        <input type="text" class="form-control" placeholder="Rol" th:field="*{rol.nombre}"/>
                         <button type="submit" class="btn btn-warning"><i class="bi bi-search"></i></button>
                     </div>
 

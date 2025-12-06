@@ -88,6 +88,7 @@ public class UsuarioController {
     @GetMapping
     public String getAll(Model model) {
         Result result = usuarioDaoImplementation.GetAll();
+      
         //model permite cargar informacion desde el backend en la vistas(frontend)
         model.addAttribute("Usuarios", result.Objects);
         model.addAttribute("UsuarioBusqueda", new Usuario());
@@ -439,9 +440,17 @@ public class UsuarioController {
     }
     
     @PostMapping("/search")
-    public String buscarUsuarios(@ModelAttribute("Usuario") Usuario usuario){
+    public String buscarUsuarios(@ModelAttribute("Usuario") Usuario usuario, RedirectAttributes redirectAttributes){
+        Result resultSearch = usuarioDaoImplementation.search(usuario);
         
-//        return "redirect:/Index";
+        
+            
+            
+            
+       
+            return "redirect:/Usuario";
+        
+//        model.addAttribute("", resultSearch)
     }
 
 }
