@@ -381,8 +381,8 @@ public class UsuarioDAOImplementation implements IUsuario {
                 callableStatement.execute();
 
                 ResultSet resultSet = (ResultSet) callableStatement.getObject(5);
-
-                if (resultSet.next()) {
+                result.Objects = new ArrayList<>();
+                while (resultSet.next()) {
                     Usuario user = new Usuario();
                     user.setNombre(resultSet.getString("NOMBREUSUARIO"));
                     user.setApellidoPaterno(resultSet.getString("APELLIDOPATERNO"));
@@ -395,11 +395,9 @@ public class UsuarioDAOImplementation implements IUsuario {
                     user.setTelefono(resultSet.getString("TELEFONO"));
                     user.setCelular(resultSet.getString("CELULAR"));
                     user.setCurp(resultSet.getString("CURP"));
-
-                    return true;
-                } else {
-                    return false;
+                    result.Objects.add(user);
                 }
+                return true;
 
             });
         } catch (Exception ex) {

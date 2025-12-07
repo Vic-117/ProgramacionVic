@@ -33,7 +33,7 @@
                                                 <!--BARRA DE BUSQUEDA-->
                                                 
             <section class="container">
-                <form class=" mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{/Usuario/search}">
+                <form class=" mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{/Usuario/Search}">
                     <div class="input-group">
                         <label class="input-group-text">BUSQUEDA:</label> 
                         <input type="text" class="form-control" placeholder="Nombre"  th:field="*{Nombre}"/>

@@ -88,10 +88,9 @@ public class UsuarioController {
     @GetMapping
     public String getAll(Model model) {
         Result result = usuarioDaoImplementation.GetAll();
-      
         //model permite cargar informacion desde el backend en la vistas(frontend)
         model.addAttribute("Usuarios", result.Objects);
-        model.addAttribute("UsuarioBusqueda", new Usuario());
+        model.addAttribute("UsuarioBusqueda", new Usuario());//creando usuario(vacio) para que pueda mandarse la busqueda
         return "Index";
     }
 
@@ -122,8 +121,7 @@ public class UsuarioController {
         } else if (usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == -1) { // editar
 
             return "redirect:/Usuario/";
-            
-            
+
         } else if ((usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() > 0)) { // editar direccion
             return "redirect:/Usuario";
         } else if ((usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == 0)) { // agregar direccion
@@ -154,22 +152,18 @@ public class UsuarioController {
         Result result = usuarioDaoImplementation.GetDireccionUsuarioById(idUsuario);
         Result resultUsuario = usuarioDaoImplementation.GetById(idUsuario);
         model.addAttribute("Usuario", result.Object);
-        
-        
-        
+
 //            Result resultUpdate = usuarioDaoImplementation.UpdateUsuario(usuario);
-            Result resultUpdate = new Result();
-            resultUpdate.Correct = true;
-            if (resultUpdate.Correct) {
-                resultUpdate.Object = "Usuario actualizado" + idUsuario;
-            } else {
-                resultUpdate.Object = "Usuario  NO  actualizado" + idUsuario;
-            }
-            redirectAttributes.addFlashAttribute("resultUpdateUsuario", resultUpdate);
-            redirectAttributes.addFlashAttribute("usuario", resultUsuario);
-        
-        
-        
+        Result resultUpdate = new Result();
+        resultUpdate.Correct = true;
+        if (resultUpdate.Correct) {
+            resultUpdate.Object = "Usuario actualizado" + idUsuario;
+        } else {
+            resultUpdate.Object = "Usuario  NO  actualizado" + idUsuario;
+        }
+        redirectAttributes.addFlashAttribute("resultUpdateUsuario", resultUpdate);
+        redirectAttributes.addFlashAttribute("usuario", resultUsuario);
+
         return "detalleUsuario";
     }
 
@@ -198,7 +192,7 @@ public class UsuarioController {
     //SOLO CARGA LA PAGINA(PARTES DEL FORMULARIO)
     @GetMapping("/formularioEditable")//----------->>>>>>>>>
     public String getUsuarioForm(@RequestParam int idUsuario, @RequestParam(required = false) Integer idDireccion, Model model, RedirectAttributes redirectAttributes) {
-     
+
         if (idDireccion == null) {
             //modificar usuario
             Result resultRol = rolDaoImplementation.getAll();
@@ -438,19 +432,14 @@ public class UsuarioController {
 
         return "redirect:/Usuario";
     }
-    
-    @PostMapping("/search")
-    public String buscarUsuarios(@ModelAttribute("Usuario") Usuario usuario, RedirectAttributes redirectAttributes){
+
+    @PostMapping("/Search")
+    public String buscarUsuarios(@ModelAttribute("Usuario") Usuario usuario, Model model) {
         Result resultSearch = usuarioDaoImplementation.search(usuario);
-        
-        
-            
-            
-            
-       
-            return "redirect:/Usuario";
-        
-//        model.addAttribute("", resultSearch)
+        model.addAttribute("Usuarios", resultSearch.Objects);
+        return "redirect:/Usuario";
+//        return "Index";
+
     }
 
 }
