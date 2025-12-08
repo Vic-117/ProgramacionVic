@@ -29,9 +29,9 @@
 
                 </center>
             </div>
-            
-                                                <!--BARRA DE BUSQUEDA-->
-                                                
+
+            <!--BARRA DE BUSQUEDA-->
+
             <section class="container">
                 <form class=" mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{/Usuario/Search}">
                     <div class="input-group">
@@ -92,6 +92,8 @@
 
             </table>
         </div>
+        
+        
         <script th:if="${resultDelete}" th:inline="javascript">
             console.log([[${resultDelete}]]);
             if ([[${resultDelete.Correct}]]){

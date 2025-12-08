@@ -112,15 +112,34 @@ public class UsuarioController {
                 Result result = rolDaoImplementation.getAll();
                 model.addAttribute("Roles", result.Objects);
                 model.addAttribute("Usuario", usuario);
+                //AGREGADO RECIENTEMENTE
+                if(result.Correct){
+                    redirectAttributes.addFlashAttribute("ErroresC",result.Correct);
+                }else{
+                     redirectAttributes.addFlashAttribute("ErroresC",result.Correct);
+                }
                 return "UsuarioDireccionForm";
             } else {
-                usuarioDaoImplementation.Add(usuario);
+                //AGREGADO RECIENTEMENTE SOLO EL IF
+                boolean usuarioAgregar = usuarioDaoImplementation.Add(usuario);
+                if(usuarioAgregar){
+                    redirectAttributes.addFlashAttribute("ErroresC",usuarioAgregar);
+                }else{
+                     redirectAttributes.addFlashAttribute("ErroresC",usuarioAgregar);
+                }
                 return "redirect:/Usuario";
             }
 
         } else if (usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == -1) { // editar
-
-            return "redirect:/Usuario/";
+            
+            //AGREGADO RECIENTEMENTE
+            Result resultUpdateUsuario = usuarioDaoImplementation.UpdateUsuario(usuario);
+             if(resultUpdateUsuario.Correct){
+                    redirectAttributes.addFlashAttribute("ErroresC",resultUpdateUsuario.Correct);
+                }else{
+                     redirectAttributes.addFlashAttribute("ErroresC",resultUpdateUsuario.Correct);
+                }
+//            return "redirect:/Usuario/";
 
         } else if ((usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() > 0)) { // editar direccion
             return "redirect:/Usuario";

@@ -256,13 +256,7 @@
                         <option value=0>Selecciona la Colonia</option>
                     </select>
                 </div>
-                <!--                                <div class="input-group">
-                                                   
-                                                  
-                                                    
-                                                    
-                                                  
-                                                </div>-->
+              
 
 
 
@@ -272,7 +266,7 @@
                 <!--<button type="submit" class="btn btn-success col-12" th:if="${(Usuario.idUsuario !=0 && Usuario.direcciones[0].IdDireccion > 0 )}">Editar</button>--> 
             </section>
 
-            <button type="submit" class="btn btn-success col-12" th:onclick="|EditarUsuario(${usuario})|" >Guardar</button> 
+            <button type="submit" class="btn btn-success col-12" th:onclick="cargarUsuario()" >Guardar</button> 
 
 
 
@@ -601,11 +595,11 @@
 
         
 
-        <script>
+        <script th:if="${ErroresC}" th:inline="javascript">
      
             
-            function EditarUsuario(idUsuario) {
-            Swal.fire({
+            function cargarUsuario() {
+                Swal.fire({
             title: "Are you sure?",
                     text: "You won't be able to revert this!",
                     icon: "warning",
@@ -616,8 +610,8 @@
             }).then((result) => {
             if (result.isConfirmed) {
 
-                 window.location.href = "/Usuario/detail/" +idUsuario;
-            }   
+            window.location.href = "/Usuario/add";
+            }
             });
             }
         </script>
