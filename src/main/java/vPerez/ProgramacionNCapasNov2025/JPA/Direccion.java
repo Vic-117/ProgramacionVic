@@ -1,0 +1,41 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package vPerez.ProgramacionNCapasNov2025.JPA;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+/**
+ *
+ * @author digis
+ */
+@Entity
+@Table(name = "DIRECCION")
+public class Direccion {
+
+    @Id
+    @Column(name = "idireccion")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int IdDireccion;
+    private String calle;
+    @Column(name = "numerointerior")
+    private String numeroInterior;
+    @Column(name = "numeroexterior")
+    private String numeroExterior;
+    @ManyToOne
+    @JoinColumn(name="idcolonia")
+    public Colonia colonia;
+    
+    @ManyToOne
+    @JoinColumn(name="idusuario")
+    public Usuario usuario;
+}
