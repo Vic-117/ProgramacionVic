@@ -130,21 +130,24 @@ public class UsuarioController {
                     model.addAttribute("ErroresC", "Sucedio un error.");
                     return "UsuarioDireccionForm";
                 }
-//               
+
                 redirectAttributes.addFlashAttribute("ResultAgregar", "El usuario se agregó con exito"); // Agregado
 
             }
 
-        } else if (usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == -1) { // editar
+        } else if (usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == -1) { // editar usuario
 
             //AGREGADO RECIENTEMENTE
             Result resultUpdateUsuario = usuarioDaoImplementation.UpdateUsuario(usuario);
+             
             if (resultUpdateUsuario.Correct) {
-                redirectAttributes.addFlashAttribute("ErroresC", resultUpdateUsuario.Correct);
-            } else {
-                redirectAttributes.addFlashAttribute("ErroresC", resultUpdateUsuario.Correct);
+               resultUpdateUsuario.Object = "Exito al actualizar";
+            }else{
+                 resultUpdateUsuario.Object = "Error al actualizar";
             }
-//            return "redirect:/Usuario/";
+            redirectAttributes.addFlashAttribute("resultadoUpdate", resultUpdateUsuario);
+//            return "detalleUsuario";
+            return "redirect:/Usuario/detail/"+usuario.getIdUsuario();
 
         } else if ((usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() > 0)) { // editar direccion
             return "redirect:/Usuario";

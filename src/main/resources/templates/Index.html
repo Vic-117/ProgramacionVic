@@ -12,36 +12,36 @@
     <body class="container">
         <br>
 
-        <div class="container">
+        <div class="row">
             <br>
-            <div class="input-group col-12">
+            <div class="input-group col-12  position-relative start-50 top-5 start-0 translate-middle-x">
 
-                <a th:href='@{/Usuario/CargaMasiva}' class="btn btn-outline-success col-6">Carga masiva</a>
+                <a th:href='@{/Usuario/CargaMasiva}' class="btn btn-outline-success col-3">Carga masiva</a>
                 <!--<br>-->
-                <a th:href='@{/Usuario/UsuarioDireccionForm}' class="btn btn-outline-success col-6">Agregar nuevo usuario</a>
+                <a th:href='@{/Usuario/UsuarioDireccionForm}' class="btn btn-outline-success col-9">Agregar usuario</a>
             </div> 
 
             <br>
             <div class="container">
-                <center>
+             
 
-                    <h1>LISTA DE USUARIOS</h1>
+                    <h1 class="mb-3 fw-bold">USUARIOS</h1>
 
-                </center>
+              
             </div>
 
             <!--BARRA DE BUSQUEDA-->
 
             <section class="container">
-                <form class=" mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{Usuario/Search}">
-                    <div class="input-group">
-                        <label class="input-group-text">BUSQUEDA:</label> 
-                        <input type="text" class="form-control" placeholder="Nombre"  th:field="*{Nombre}"/>
-                        <input type="text" class="form-control" placeholder="Apellido Paterno"  th:field="*{ApellidoPaterno}"/>
-                        <input type="text" class="form-control" placeholder="Apellido Materno" th:field="*{ApellidoMaterno}" />
+                <form class="row mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{Usuario/Search}">
+                    <div class="input-group ">
+                        <label class="input-group-text fw-bold col-1">BUSCAR</label> 
+                        <input type="text" class="form-control col-2" placeholder="Nombre"  th:field="*{Nombre}"/>
+                        <input type="text" class="form-control col-2" placeholder="Apellido Paterno"  th:field="*{ApellidoPaterno}"/>
+                        <input type="text" class="form-control col-2" placeholder="Apellido Materno" th:field="*{ApellidoMaterno}" />
                         <!--<input type="text" class="form-control" placeholder="Rol" th:field="*{rol.nombre}"/>-->
 
-                        <select class="form-control"  th:field="*{rol.idRol}">
+                        <select class="form-control col-2"  th:field="*{rol.idRol}">
                             <option value="0">Selecciona un rol</option>
                             <option th:each="rol:${Roles}"  th:text="${rol.nombre}" th:value="${rol.idRol}"></option>
                         </select>    
@@ -86,7 +86,7 @@
                         <button class="btn btn-danger" th:onclick="|EliminarUsuario(${usuario.idUsuario})|">
                             <i class="bi bi-trash-fill"></i>
                         </button>
-                        <a href="url" class="btn btn-info" th:href="@{Usuario/detail/{idUsuario} (idUsuario=${usuario.idUsuario})}">
+                        <a href="url" class="btn btn-info" th:href="@{/Usuario/detail/{idUsuario} (idUsuario=${usuario.idUsuario})}">
 
 
                             <i class="bi bi-vector-pen"></i>
@@ -121,7 +121,7 @@
                     text:[[${resultDelete.Object}]],
             });
             }
-        </script>}
+        </script>
 
 
 

@@ -76,25 +76,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         </section>
         
-        <script th:if="${resultUpdateUsuario}" th:inline="javascript">
-            if ([[${resultUpdateUsuario.Correct}]]) {
+        
+            
+             <script th:if="${resultadoUpdate}" th:inline="javascript">
+            console.log("Entró");
+            if ([[${resultadoUpdate.Correct}]]){
                 Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 5000
-                });
-            } else {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "error",
-                    title: "Update error",
-                    showConfirmButton: false,
-                    timer: 5000
-                });
-
+                position: "top-end",
+                        icon: "success",
+                        title: [[${resultadoUpdate.Object}]],
+                        showConfirmButton: false,
+                        timer: 1500
+                        });
+            } else{
+                 Swal.fire({
+                position: "top-end",
+                        icon: "Error",
+                        title: [[${resultadoUpdate.Object}]],
+                        showConfirmButton: false,
+                        timer: 1500
+                        });
             }
+        </script>
 
         </script>
     </body>
