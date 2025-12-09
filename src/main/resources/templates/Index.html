@@ -33,13 +33,20 @@
             <!--BARRA DE BUSQUEDA-->
 
             <section class="container">
-                <form class=" mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{/Usuario/Search}">
+                <form class=" mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{Usuario/Search}">
                     <div class="input-group">
                         <label class="input-group-text">BUSQUEDA:</label> 
                         <input type="text" class="form-control" placeholder="Nombre"  th:field="*{Nombre}"/>
                         <input type="text" class="form-control" placeholder="Apellido Paterno"  th:field="*{ApellidoPaterno}"/>
-                        <input type="text" class="form-control" placeholder="Apellido Materno" />
-                        <input type="text" class="form-control" placeholder="Rol" th:field="*{rol.nombre}"/>
+                        <input type="text" class="form-control" placeholder="Apellido Materno" th:field="*{ApellidoMaterno}" />
+                        <!--<input type="text" class="form-control" placeholder="Rol" th:field="*{rol.nombre}"/>-->
+
+                        <select class="form-control"  th:field="*{rol.idRol}">
+                            <option value="0">Selecciona un rol</option>
+                            <option th:each="rol:${Roles}"  th:text="${rol.nombre}" th:value="${rol.idRol}"></option>
+                        </select>    
+
+
                         <button type="submit" class="btn btn-warning"><i class="bi bi-search"></i></button>
                     </div>
 
@@ -47,7 +54,7 @@
             </section>
 
 
-            <table class="table table-primary table-striped-columns  table-hover table-responsive col-sm-12">
+            <table class="table table-primary table-striped-columns  table-hover table-responsive col-sm-12" >
                 <!--cabeceras de tabla-->
                 <th class="col-3 " style="color:green">Nombre Completo</th>
                 <th class="col-4" style="color:green">Información</th>
@@ -79,10 +86,13 @@
                         <button class="btn btn-danger" th:onclick="|EliminarUsuario(${usuario.idUsuario})|">
                             <i class="bi bi-trash-fill"></i>
                         </button>
-                        <a href="url" class="btn btn-info"  th:href="@{Usuario/detail/{idUsuario} (idUsuario=${usuario.idUsuario})}">
+                        <a href="url" class="btn btn-info" th:href="@{Usuario/detail/{idUsuario} (idUsuario=${usuario.idUsuario})}">
+
 
                             <i class="bi bi-vector-pen"></i>
                         </a>
+
+                     
                     </td>
 
 
@@ -92,8 +102,8 @@
 
             </table>
         </div>
-        
-        
+
+
         <script th:if="${resultDelete}" th:inline="javascript">
             console.log([[${resultDelete}]]);
             if ([[${resultDelete.Correct}]]){
@@ -111,7 +121,9 @@
                     text:[[${resultDelete.Object}]],
             });
             }
-        </script>
+        </script>}
+
+
 
         <script>
             function EliminarUsuario(idUsuario) {
@@ -133,6 +145,21 @@
 
         </script>
 
+        <script th:if="${ResultAgregar}" th:inline="javascript">
+
+
+
+
+
+            Swal.fire({
+            position: "top-end",
+                    icon: "success",
+                    title: [[${ResultAgregar}]],
+                    showConfirmButton: false,
+                    timer: 1500
+            });
+
+        </script>
 
     </body>
 </html>

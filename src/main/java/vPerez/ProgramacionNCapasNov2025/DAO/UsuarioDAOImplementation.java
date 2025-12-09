@@ -128,7 +128,7 @@ public class UsuarioDAOImplementation implements IUsuario {
     }
 
     @Override
-    public boolean Add(Usuario user) {
+    public Result Add(Usuario user) {
         Result result = new Result();
 
         result.Correct = jdbcTemplate.execute("{CALL AlumnoDireccionAdd(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}", (CallableStatementCallback<Boolean>) callableStatement -> {
@@ -161,7 +161,7 @@ public class UsuarioDAOImplementation implements IUsuario {
             result.ErrorMesagge = ex.getLocalizedMessage();
             result.ex = ex;
         }
-        return result.Correct;
+        return result;
     }
 
     @Override
@@ -376,26 +376,75 @@ public class UsuarioDAOImplementation implements IUsuario {
                 callableStatement.setString(1, usuario.getNombre());
                 callableStatement.setString(2, usuario.getApellidoPaterno());
                 callableStatement.setString(3, usuario.getApellidoMaterno());
-                callableStatement.setString(4, usuario.getRol().getNombre());
+                callableStatement.setInt(4, usuario.getRol().getIdRol());
                 callableStatement.registerOutParameter(5, REF_CURSOR);
                 callableStatement.execute();
 
                 ResultSet resultSet = (ResultSet) callableStatement.getObject(5);
                 result.Objects = new ArrayList<>();
+                
                 while (resultSet.next()) {
-                    Usuario user = new Usuario();
-                    user.setNombre(resultSet.getString("NOMBREUSUARIO"));
-                    user.setApellidoPaterno(resultSet.getString("APELLIDOPATERNO"));
-                    user.setApellidoMaterno(resultSet.getString("APELLIDOMATERNO"));
-                    user.rol = new Rol();
-                    user.rol.setNombre(resultSet.getString("NOMBREROL"));
-                    user.setEmail(resultSet.getString("EMAIL"));
-                    user.setFechaNacimiento(resultSet.getDate("FECHANACIMIENTO"));
-                    user.setSexo(resultSet.getString("SEXO"));
-                    user.setTelefono(resultSet.getString("TELEFONO"));
-                    user.setCelular(resultSet.getString("CELULAR"));
-                    user.setCurp(resultSet.getString("CURP"));
-                    result.Objects.add(user);
+                    int idUsuario = resultSet.getInt("IDUSUARIO");
+
+                    if (!result.Objects.isEmpty() && ((Usuario) result.Objects.get(result.Objects.size() - 1)).getIdUsuario() == idUsuario) {
+                        Direccion direccion = new Direccion();
+                        direccion.colonia = new Colonia();
+                        direccion.colonia.municipio = new Municipio();
+                        direccion.colonia.municipio.estado = new Estado();
+                        direccion.colonia.municipio.estado.pais = new Pais();
+
+                        direccion.setIdDireccion(resultSet.getInt("IDDIRECCION"));
+                        direccion.setCalle(resultSet.getString("CALLE"));
+                        direccion.setNumeroInterior(resultSet.getString("NUMEROINTERIOR"));
+                        direccion.setNumeroExterior(resultSet.getString("NUMEROEXTERIOR"));
+                        direccion.colonia.setNombre(resultSet.getString("NOMBRECOLONIA"));
+                        direccion.colonia.setCodigoPostal(resultSet.getString("CODIGOPOSTAL"));
+                        direccion.colonia.municipio.setNombre(resultSet.getString("MUNICIPIONOMBRE"));
+                        direccion.colonia.municipio.estado.setNombre(resultSet.getString("ESTADONOMBRE"));
+                        direccion.colonia.municipio.estado.pais.setNombre(resultSet.getString("PAISNOMBRE"));
+                        Usuario usuarioExistente = (Usuario) result.Objects.get(result.Objects.size() - 1);
+                        usuarioExistente.direcciones.add(direccion);
+                    } else {
+                        Usuario user = new Usuario();
+                        Direccion dir = new Direccion();
+
+                        user.direcciones = new ArrayList<>();
+                        user.rol = new Rol();
+                        dir.colonia = new Colonia();
+                        dir.colonia.municipio = new Municipio();
+                        dir.colonia.municipio.estado = new Estado();
+                        dir.colonia.municipio.estado.pais = new Pais();
+
+                        user.setIdUsuario(resultSet.getInt("IDUSUARIO"));
+                        user.setNombre(resultSet.getString("NOMBREUSUARIO"));
+                        user.setApellidoPaterno(resultSet.getString("APELLIDOPATERNO"));
+                        user.setApellidoMaterno(resultSet.getString("APELLIDOMATERNO"));
+                        user.setEmail(resultSet.getString("EMAIL"));
+                        user.setFechaNacimiento(resultSet.getDate("FECHANACIMIENTO"));
+                        user.setSexo(resultSet.getString("SEXO"));
+                        user.setTelefono(resultSet.getString("TELEFONO"));
+                        user.setCelular(resultSet.getString("CELULAR"));
+                        user.setCurp(resultSet.getString("CURP"));
+                        user.rol.setIdRol(resultSet.getInt("IDROL"));
+                        user.rol.setNombre(resultSet.getString("NOMBREROL"));
+
+                        int idDireccion = resultSet.getInt("IDDIRECCION");
+                        if (idDireccion != 0) {
+
+                            dir.setIdDireccion(resultSet.getInt("IDDIRECCION"));
+                            dir.setCalle(resultSet.getString("CALLE"));
+                            dir.setNumeroInterior(resultSet.getString("NUMEROINTERIOR"));
+                            dir.setNumeroExterior(resultSet.getString("NUMEROEXTERIOR"));
+                            dir.colonia.setNombre(resultSet.getString("NOMBRECOLONIA"));
+                            dir.colonia.setCodigoPostal(resultSet.getString("CODIGOPOSTAL"));
+                            dir.colonia.municipio.setNombre(resultSet.getString("MUNICIPIONOMBRE"));
+                            dir.colonia.municipio.estado.setNombre(resultSet.getString("ESTADONOMBRE"));
+                            dir.colonia.municipio.estado.pais.setNombre(resultSet.getString("PAISNOMBRE"));
+                            user.direcciones.add(dir);
+                        }
+                        result.Objects.add(user);
+                    }
+
                 }
                 return true;
 

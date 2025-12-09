@@ -87,10 +87,14 @@ public class UsuarioController {
 
     @GetMapping
     public String getAll(Model model) {
-        Result result = usuarioDaoImplementation.GetAll();
+
         //model permite cargar informacion desde el backend en la vistas(frontend)
+        Result result = usuarioDaoImplementation.GetAll();
         model.addAttribute("Usuarios", result.Objects);
         model.addAttribute("UsuarioBusqueda", new Usuario());//creando usuario(vacio) para que pueda mandarse la busqueda
+        Result resultRoles = rolDaoImplementation.getAll();
+        model.addAttribute("Roles", resultRoles.Objects);
+
         return "Index";
     }
 
@@ -113,32 +117,33 @@ public class UsuarioController {
                 model.addAttribute("Roles", result.Objects);
                 model.addAttribute("Usuario", usuario);
                 //AGREGADO RECIENTEMENTE
-                if(result.Correct){
-                    redirectAttributes.addFlashAttribute("ErroresC",result.Correct);
-                }else{
-                     redirectAttributes.addFlashAttribute("ErroresC",result.Correct);
+                if (result.Correct) {
+                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
+                } else {
+                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
                 }
                 return "UsuarioDireccionForm";
             } else {
                 //AGREGADO RECIENTEMENTE SOLO EL IF
-                boolean usuarioAgregar = usuarioDaoImplementation.Add(usuario);
-                if(usuarioAgregar){
-                    redirectAttributes.addFlashAttribute("ErroresC",usuarioAgregar);
-                }else{
-                     redirectAttributes.addFlashAttribute("ErroresC",usuarioAgregar);
+                Result result = usuarioDaoImplementation.Add(usuario);
+                if (!result.Correct) {
+                    model.addAttribute("ErroresC", "Sucedio un error.");
+                    return "UsuarioDireccionForm";
                 }
-                return "redirect:/Usuario";
+//               
+                redirectAttributes.addFlashAttribute("ResultAgregar", "El usuario se agregó con exito"); // Agregado
+
             }
 
         } else if (usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == -1) { // editar
-            
+
             //AGREGADO RECIENTEMENTE
             Result resultUpdateUsuario = usuarioDaoImplementation.UpdateUsuario(usuario);
-             if(resultUpdateUsuario.Correct){
-                    redirectAttributes.addFlashAttribute("ErroresC",resultUpdateUsuario.Correct);
-                }else{
-                     redirectAttributes.addFlashAttribute("ErroresC",resultUpdateUsuario.Correct);
-                }
+            if (resultUpdateUsuario.Correct) {
+                redirectAttributes.addFlashAttribute("ErroresC", resultUpdateUsuario.Correct);
+            } else {
+                redirectAttributes.addFlashAttribute("ErroresC", resultUpdateUsuario.Correct);
+            }
 //            return "redirect:/Usuario/";
 
         } else if ((usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() > 0)) { // editar direccion
@@ -454,10 +459,12 @@ public class UsuarioController {
 
     @PostMapping("/Search")
     public String buscarUsuarios(@ModelAttribute("Usuario") Usuario usuario, Model model) {
+        model.addAttribute("UsuarioBusqueda", new Usuario());//creando usuario(vacio) para que pueda mandarse la busqueda
         Result resultSearch = usuarioDaoImplementation.search(usuario);
+        Result resultRoles = rolDaoImplementation.getAll();
+        model.addAttribute("Roles", resultRoles.Objects);
         model.addAttribute("Usuarios", resultSearch.Objects);
-        return "redirect:/Usuario";
-//        return "Index";
+        return "Index";
 
     }
 

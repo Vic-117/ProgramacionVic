@@ -17,7 +17,7 @@ import vPerez.ProgramacionNCapasNov2025.ML.Usuario;
 public interface IUsuario {
     public Result GetAll();
     
-    public boolean Add(Usuario user);
+    public Result Add(Usuario user);
     
     public Result GetDireccionUsuarioById(int id);
     
