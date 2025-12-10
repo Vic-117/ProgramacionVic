@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 public class Direccion {
 
     @Id
-    @Column(name = "idireccion")
+    @Column(name = "iddireccion")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int IdDireccion;
     private String calle;
@@ -38,4 +38,54 @@ public class Direccion {
     @ManyToOne
     @JoinColumn(name="idusuario")
     public Usuario usuario;
+
+    public int getIdDireccion() {
+        return IdDireccion;
+    }
+
+    public void setIdDireccion(int IdDireccion) {
+        this.IdDireccion = IdDireccion;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
+    }
+
+    public String getNumeroInterior() {
+        return numeroInterior;
+    }
+
+    public void setNumeroInterior(String numeroInterior) {
+        this.numeroInterior = numeroInterior;
+    }
+
+    public String getNumeroExterior() {
+        return numeroExterior;
+    }
+
+    public void setNumeroExterior(String numeroExterior) {
+        this.numeroExterior = numeroExterior;
+    }
+
+    public Colonia getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(Colonia colonia) {
+        this.colonia = colonia;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    
 }

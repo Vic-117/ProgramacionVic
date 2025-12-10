@@ -48,6 +48,7 @@ import vPerez.ProgramacionNCapasNov2025.DAO.MunicipioDAOImplementation;
 import vPerez.ProgramacionNCapasNov2025.DAO.PaisDAOImplementation;
 import vPerez.ProgramacionNCapasNov2025.DAO.RolDAOImplementation;
 import vPerez.ProgramacionNCapasNov2025.DAO.UsuarioDAOImplementation;
+import vPerez.ProgramacionNCapasNov2025.DAO.UsuarioJpaDAOImplementation;
 import vPerez.ProgramacionNCapasNov2025.ML.Colonia;
 import vPerez.ProgramacionNCapasNov2025.ML.Direccion;
 import vPerez.ProgramacionNCapasNov2025.ML.ErrorCarga;
@@ -85,11 +86,15 @@ public class UsuarioController {
     @Autowired
     private ValidationService ValidationService;
 
+    @Autowired
+    private UsuarioJpaDAOImplementation usuarioJpaDAOImplementation;
+    
     @GetMapping
     public String getAll(Model model) {
 
         //model permite cargar informacion desde el backend en la vistas(frontend)
-        Result result = usuarioDaoImplementation.GetAll();
+//        Result result = usuarioDaoImplementation.GetAll();
+        Result result = usuarioJpaDAOImplementation.getAll();
         model.addAttribute("Usuarios", result.Objects);
         model.addAttribute("UsuarioBusqueda", new Usuario());//creando usuario(vacio) para que pueda mandarse la busqueda
         Result resultRoles = rolDaoImplementation.getAll();
