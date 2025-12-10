@@ -37,7 +37,7 @@
     <body class="container col-sm-12 col-md-10 col-lg-9 " style="background-color:#F2F2F2;align-items: center">
 
 
-        <form class="" method="post" th:object="${Usuario}" th:action="@{add}" style="margin:2rem; ;flex-direction: column">
+        <form class="" method="post" th:object="${Usuario}" th:action="@{add}" style="margin:2rem; flex-direction: column">
 
             <input type="hidden" th:field="${Usuario.idUsuario}">
             <input type="hidden" th:field="${Usuario.Direcciones[0].IdDireccion}">

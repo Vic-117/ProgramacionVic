@@ -35,16 +35,18 @@ private ModelMapper modelMapper;
         try{
             TypedQuery<Usuario> typedQuery= entityManager.createQuery("FROM Usuario",Usuario.class);
           List<Usuario> usuarios = typedQuery.getResultList();
-          //                                                                              FORMA 1
+          //                                                       FORMA 1
           
           result.Objects = new ArrayList<>();
           for(Usuario usuario : usuarios){
               vPerez.ProgramacionNCapasNov2025.ML.Usuario usuarioML = modelMapper.map(usuario, vPerez.ProgramacionNCapasNov2025.ML.Usuario.class);
+              result.Objects.add(usuarioML);
           }
           
           
           
-          //                                                                                FORMA 2.
+          
+          //                                                     FORMA 2.
           //Conversion que se hace automaticamente por el mapper:
 //          List< vPerez.ProgramacionNCapasNov2025.ML.Usuario> dtos = usuarioMapper.toDTOList(usuarios);
 //          result.Objects = new ArrayList<>();
