@@ -23,6 +23,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Usuario {
 
     private int idUsuario;
+//    @NotNull(message = "Agrega la imagen.")
+    private String imagen;
     @NotNull(message = "Escribe algo...")
     @NotEmpty(message = "Campo requerido, por favor llenalo")
     @Size(min = 2, max = 49)
@@ -77,7 +79,8 @@ public class Usuario {
 
     }
 
-    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String email, String password, Date fechaNacimiento) {
+    public Usuario(int idUsuario, String imagen,String nombre, String apellidoPaterno, String apellidoMaterno, String email, String password, Date fechaNacimiento) {
+        this.imagen = imagen;
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -94,6 +97,16 @@ public class Usuario {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+    
+    
 
     public String getNombre() {
         return nombre;

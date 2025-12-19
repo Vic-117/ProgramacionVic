@@ -23,11 +23,11 @@
 
             <br>
             <div class="container">
-             
 
-                    <h1 class="mb-3 fw-bold">USUARIOS</h1>
 
-              
+                <h1 class="mb-3 fw-bold">USUARIOS</h1>
+
+
             </div>
 
             <!--BARRA DE BUSQUEDA-->
@@ -75,7 +75,7 @@
                             <li th:each = "direccion:${usuario.Direcciones}" th:text="|Calle. ${direccion.calle}. No.Interior. ${direccion.numeroInterior}. No.Exterior. ${direccion.numeroExterior}. CodPos. ${direccion.colonia.CodigoPostal}. col. ${direccion.colonia.nombre}|"></li>
                         </ul>
                         <ul th:unless="${usuario.Direcciones ==null}" >
-                            <!--                            <li>Sin direccion</li>-->
+                            <p ></p>
                         </ul>
 
 
@@ -92,7 +92,7 @@
                             <i class="bi bi-vector-pen"></i>
                         </a>
 
-                     
+
                     </td>
 
 

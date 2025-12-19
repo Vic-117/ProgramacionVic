@@ -21,6 +21,7 @@ import java.util.List;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Base64;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -88,7 +89,7 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioJpaDAOImplementation usuarioJpaDAOImplementation;
-    
+
     @GetMapping
     public String getAll(Model model) {
 
@@ -113,22 +114,34 @@ public class UsuarioController {
         return "UsuarioDireccionForm";
     }
 
+    //Con @RequestParam recibimos la imagen que se subió en el input file que tiene el name:"imagen"
     @PostMapping("add")
-    public String addAlumnoDireccion(@Valid @ModelAttribute("Usuario") Usuario usuario, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String addAlumnoDireccion(@Valid @ModelAttribute("Usuario") Usuario usuario, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes, @RequestParam("imagenInput") MultipartFile imagen) throws IOException{
+        long tamaño = imagen.getSize();
+//         usuario.setImagen(Base64.getEncoder().encodeToString(imagen.getBytes()));
+        if (imagen.getSize() > 0) {//SI HAY UNA IMAGEN
+            String extension = imagen.getOriginalFilename().split("\\.")[1];//Divide el nombre(ej."nombre.jpg") antes y despues del punto en un arreglo
+            if (extension.equals("png") || extension.equals("jpg") || extension.equals("jpeg")) {//Si la extension es de imagen
+                 usuario.setImagen(Base64.getEncoder().encodeToString(imagen.getBytes()));//codifica la imagen a String(obteniendo los bites de la imagen)
+               
 
-        if (usuario.getIdUsuario() == 0 && usuario.direcciones.get(0).getIdDireccion() == 0) { // agregar usuario direccion
-            if (bindingResult.hasErrors()) {
-                Result result = rolDaoImplementation.getAll();
-                model.addAttribute("Roles", result.Objects);
-                model.addAttribute("Usuario", usuario);
-                //AGREGADO RECIENTEMENTE
-                if (result.Correct) {
-                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
-                } else {
-                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
-                }
-                return "UsuarioDireccionForm";
-            } else {
+            }
+        }
+
+        if (usuario.getIdUsuario() == 0 && usuario.direcciones.get(0).getIdDireccion() == 0) { // agregar usuario direccion 
+//            if (bindingResult.hasErrors()) {
+//                Result result = rolDaoImplementation.getAll();
+//                model.addAttribute("Roles", result.Objects);
+//                model.addAttribute("Usuario", usuario);
+//                //AGREGADO RECIENTEMENTE
+////                if (result.Correct) {
+////                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
+////                } else {
+////                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
+////                }
+//                return "UsuarioDireccionForm";
+//            } else {
                 //AGREGADO RECIENTEMENTE SOLO EL IF
                 Result result = usuarioDaoImplementation.Add(usuario);
                 if (!result.Correct) {
@@ -136,23 +149,23 @@ public class UsuarioController {
                     return "UsuarioDireccionForm";
                 }
 
-                redirectAttributes.addFlashAttribute("ResultAgregar", "El usuario se agregó con exito"); // Agregado
+                redirectAttributes.addFlashAttribute("ResultAgregar", "El usuario se agregó con exito"); 
 
-            }
+//            }
 
         } else if (usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == -1) { // editar usuario
 
             //AGREGADO RECIENTEMENTE
             Result resultUpdateUsuario = usuarioDaoImplementation.UpdateUsuario(usuario);
-             
+
             if (resultUpdateUsuario.Correct) {
-               resultUpdateUsuario.Object = "Exito al actualizar";
-            }else{
-                 resultUpdateUsuario.Object = "Error al actualizar";
+                resultUpdateUsuario.Object = "Exito al actualizar";
+            } else {
+                resultUpdateUsuario.Object = "Error al actualizar";
             }
             redirectAttributes.addFlashAttribute("resultadoUpdate", resultUpdateUsuario);
 //            return "detalleUsuario";
-            return "redirect:/Usuario/detail/"+usuario.getIdUsuario();
+            return "redirect:/Usuario/detail/" + usuario.getIdUsuario();
 
         } else if ((usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() > 0)) { // editar direccion
             return "redirect:/Usuario";
@@ -251,7 +264,7 @@ public class UsuarioController {
 
             Result resultDireccion = direccionDaoImplementation.getById(idDireccion);
             Result resultPais = paisDaoImplementation.getAll();
-//            model.addAttribute("Pais",);
+
             model.addAttribute("Usuario", resultDireccion.Object);
             model.addAttribute("Paises", resultPais.Objects);
 

@@ -34,7 +34,7 @@ private ModelMapper modelMapper;
         Result result = new Result();
         try{
             TypedQuery<Usuario> typedQuery= entityManager.createQuery("FROM Usuario",Usuario.class);
-          List<Usuario> usuarios = typedQuery.getResultList();
+          List<Usuario> usuarios = typedQuery.getResultList();//Usuarios entidades
           //                                                       FORMA 1
           
           result.Objects = new ArrayList<>();

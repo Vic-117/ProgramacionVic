@@ -131,7 +131,7 @@ public class UsuarioDAOImplementation implements IUsuario {
     public Result Add(Usuario user) {
         Result result = new Result();
 
-        result.Correct = jdbcTemplate.execute("{CALL AlumnoDireccionAdd(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}", (CallableStatementCallback<Boolean>) callableStatement -> {
+        result.Correct = jdbcTemplate.execute("{CALL AlumnoDireccionAdd(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}", (CallableStatementCallback<Boolean>) callableStatement -> {
             callableStatement.setString(1, user.getNombre());
             callableStatement.setString(2, user.getApellidoPaterno());
             callableStatement.setString(3, user.getApellidoMaterno());
@@ -148,6 +148,7 @@ public class UsuarioDAOImplementation implements IUsuario {
             callableStatement.setString(13, user.direcciones.get(0).getNumeroInterior());
             callableStatement.setString(14, user.direcciones.get(0).getNumeroExterior());
             callableStatement.setInt(15, user.direcciones.get(0).getColonia().getIdColonia());
+            callableStatement.setString(16, user.getImagen());
 
             callableStatement.execute();
 
@@ -198,6 +199,8 @@ public class UsuarioDAOImplementation implements IUsuario {
                     user.setTelefono(reST.getString("TELEFONO"));
                     user.setCelular(reST.getString("CELULAR"));
                     user.setCurp(reST.getString("CURP"));
+                    user.setImagen(reST.getString("IMAGEN"));
+//                    user.setImagen(reST.getString("NOMBREROL"));S
 
                     //HAz esto 
                     do {
@@ -276,6 +279,7 @@ public class UsuarioDAOImplementation implements IUsuario {
                     usuario.setTelefono(resultSet.getString("TELEFONO"));
                     usuario.setCelular(resultSet.getString("CELULAR"));
                     usuario.setCurp(resultSet.getString("CURP"));
+                    usuario.setImagen(resultSet.getString("IMAGEN"));
                     result.Object = usuario;
 
                 }
@@ -302,13 +306,19 @@ public class UsuarioDAOImplementation implements IUsuario {
                 callableStatement.setString(3, usuario.getApellidoPaterno());
                 callableStatement.setString(4, usuario.getApellidoMaterno());
                 callableStatement.setString(5, usuario.getEmail());
-                callableStatement.setString(6, usuario.getPassword());
-                callableStatement.setDate(7, new java.sql.Date(usuario.getFechaNacimiento().getTime()));//Posible falla
-                callableStatement.setInt(8, usuario.getRol().getIdRol());
-                callableStatement.setString(9, usuario.getSexo());
-                callableStatement.setString(10, usuario.getTelefono());
-                callableStatement.setString(11, usuario.getCelular());
-                callableStatement.setString(12, usuario.getCurp());
+//                callableStatement.setString(6, usuario.getPassword());
+                callableStatement.setDate(6, new java.sql.Date(usuario.getFechaNacimiento().getTime()));//Posible falla
+                callableStatement.setInt(7, usuario.getRol().getIdRol());
+                callableStatement.setString(8, usuario.getSexo());
+                callableStatement.setString(9, usuario.getTelefono());
+                callableStatement.setString(10, usuario.getCelular());
+                callableStatement.setString(11, usuario.getCurp());
+                callableStatement.setString(12, usuario.getImagen());
+//                if (usuario.getImagen() != null) {
+//
+//                }else{
+//                    
+//                }
 
                 int rowAffecteds = callableStatement.executeUpdate();
                 if (rowAffecteds > 0) {
@@ -382,7 +392,7 @@ public class UsuarioDAOImplementation implements IUsuario {
 
                 ResultSet resultSet = (ResultSet) callableStatement.getObject(5);
                 result.Objects = new ArrayList<>();
-                
+
                 while (resultSet.next()) {
                     int idUsuario = resultSet.getInt("IDUSUARIO");
 
