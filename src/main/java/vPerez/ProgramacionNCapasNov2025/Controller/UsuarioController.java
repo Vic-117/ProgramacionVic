@@ -130,18 +130,18 @@ public class UsuarioController {
         }
 
         if (usuario.getIdUsuario() == 0 && usuario.direcciones.get(0).getIdDireccion() == 0) { // agregar usuario direccion 
-//            if (bindingResult.hasErrors()) {
-//                Result result = rolDaoImplementation.getAll();
-//                model.addAttribute("Roles", result.Objects);
-//                model.addAttribute("Usuario", usuario);
-//                //AGREGADO RECIENTEMENTE
-////                if (result.Correct) {
-////                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
-////                } else {
-////                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
-////                }
-//                return "UsuarioDireccionForm";
-//            } else {
+            if (bindingResult.hasErrors()) {
+                Result result = rolDaoImplementation.getAll();
+                model.addAttribute("Roles", result.Objects);
+                model.addAttribute("Usuario", usuario);
+                //AGREGADO RECIENTEMENTE
+//                if (result.Correct) {
+//                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
+//                } else {
+//                    redirectAttributes.addFlashAttribute("ErroresC", result.Correct);
+//                }
+                return "UsuarioDireccionForm";
+            } else {
                 //AGREGADO RECIENTEMENTE SOLO EL IF
                 Result result = usuarioDaoImplementation.Add(usuario);
                 if (!result.Correct) {
@@ -151,7 +151,7 @@ public class UsuarioController {
 
                 redirectAttributes.addFlashAttribute("ResultAgregar", "El usuario se agregó con exito"); 
 
-//            }
+            }
 
         } else if (usuario.getIdUsuario() > 0 && usuario.direcciones.get(0).getIdDireccion() == -1) { // editar usuario
 

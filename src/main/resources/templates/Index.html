@@ -9,52 +9,78 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
-    <body class="container">
-        <br>
+    
+    
+    <body class="">
 
-        <div class="row">
-            <br>
-            <div class="input-group col-12  position-relative start-50 top-5 start-0 translate-middle-x">
+        <!--BARRA DE BUSQUEDA-->
 
-                <a th:href='@{/Usuario/CargaMasiva}' class="btn btn-outline-success col-3">Carga masiva</a>
-                <!--<br>-->
-                <a th:href='@{/Usuario/UsuarioDireccionForm}' class="btn btn-outline-success col-9">Agregar usuario</a>
-            </div> 
+        <section class="container-fluid mb-3">
+            <!-- Etiqueta -->
+            <div class="col-12 col-lg-auto">
+                <label class="fw-bold">BUSCAR</label> 
+            </div>
 
-            <br>
-            <div class="container">
+            <form class="form row g-2 align-items-center" method="post" th:object="${UsuarioBusqueda}" th:action="@{/Usuario/Search}">
 
 
-                <h1 class="mb-3 fw-bold">USUARIOS</h1>
+
+                <!-- Input group -->
+                <div class="col-12 col-lg flex-grow-1" style="font-size: 0.5rem">
+                    <div class="input-group flex-wrap " >
+
+                            <!-- Nombre más pequeño -->
+                            <input type="text" class="form-control border-6 form-control-sm col-lg-2" placeholder="Nombre" th:field="*{nombre}" />
+
+                        
+                            <!-- Apellidos más grandes -->
+                            <input type="text" class="form-control form-control-sm col-lg-3"placeholder="Apellido Paterno" th:field="*{apellidoPaterno}" />
+                           
+                        
+                            <input type="text" class="form-control form-control-sm col-lg-3" placeholder="Apellido Materno" th:field="*{apellidoMaterno}" />
+                            
+
+                        <!-- Select rol -->
+                        <select class="form-select col-lg-2" th:field="*{rol.idRol}">
+                            <option value="0">Selecciona un rol</option>
+                            <option th:each="rol:${Roles}" th:text="${rol.nombre}" th:value="${rol.idRol}"></option>
+                        </select>    
+                        <div>
+                            <!-- Botón buscar -->
+                            <button type="submit" class="btn btn-warning col-lg-auto"><i class="bi bi-search"></i></button>
+                        </div>
+
+
+                        <!-- Botones extra -->
+                        <div class="col-12 col-lg-auto">
+                            <a th:href="@{/Usuario/CargaMasiva}" class="btn btn-outline-success w-100">Carga masiva</a>
+                        </div>
+                        <div class="col-12 col-lg-auto">
+                            <a th:href="@{/Usuario/UsuarioDireccionForm}" class="btn btn-outline-success w-100">Agregar usuario</a>
+                        </div>
+                    </div>
+            </form>
+        </section>
+        <div class="container ">
+            <div class="container w-100 text-center">
+
+
+                <h2 class="mb-3 fw-bold">USUARIOS</h2>
 
 
             </div>
 
-            <!--BARRA DE BUSQUEDA-->
-
-            <section class="container">
-                <form class="row mb-3" method="post" th:object="${UsuarioBusqueda}" th:action="@{Usuario/Search}">
-                    <div class="input-group ">
-                        <label class="input-group-text fw-bold col-1">BUSCAR</label> 
-                        <input type="text" class="form-control col-2" placeholder="Nombre"  th:field="*{Nombre}"/>
-                        <input type="text" class="form-control col-2" placeholder="Apellido Paterno"  th:field="*{ApellidoPaterno}"/>
-                        <input type="text" class="form-control col-2" placeholder="Apellido Materno" th:field="*{ApellidoMaterno}" />
-                        <!--<input type="text" class="form-control" placeholder="Rol" th:field="*{rol.nombre}"/>-->
-
-                        <select class="form-control col-2"  th:field="*{rol.idRol}">
-                            <option value="0">Selecciona un rol</option>
-                            <option th:each="rol:${Roles}"  th:text="${rol.nombre}" th:value="${rol.idRol}"></option>
-                        </select>    
 
 
-                        <button type="submit" class="btn btn-warning"><i class="bi bi-search"></i></button>
-                    </div>
-
-                </form>
-            </section>
 
 
-            <table class="table table-primary table-striped-columns  table-hover table-responsive col-sm-12" >
+
+
+
+
+
+
+            <table class="table table-primary table-striped-columns  table-hover table-responsive col-sm-6" >
                 <!--cabeceras de tabla-->
                 <th class="col-3 " style="color:green">Nombre Completo</th>
                 <th class="col-4" style="color:green">Información</th>
